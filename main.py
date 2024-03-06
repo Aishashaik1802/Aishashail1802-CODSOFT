@@ -1,69 +1,42 @@
-class TodoList:
-  def __init__(self):
-      self.tasks = []
+import random
+print("Welcome to the game of Rock, Paper, Scissors!")
+def get_user_choice():
+    while True:
+        user_choice = input("Choose rock, paper, or scissors: ").lower()
+        if user_choice in ['rock', 'paper', 'scissors']:
+            return user_choice
+        else:
+            print("Invalid choice. Please choose rock, paper, or scissors.")
 
-  def add_task(self, task):
-      self.tasks.append(task)
-      print(f"Task '{task}' added.")
+def get_computer_choice():
+    return random.choice(['rock', 'paper', 'scissors'])
 
-  def view_tasks(self):
-      if self.tasks:
-          print("Tasks:")
-          for index, task in enumerate(self.tasks, start=1):
-              print(f"{index}. {task}")
-      else:
-          print("No tasks.")
+def determine_winner(user_choice, computer_choice):
+    if user_choice == computer_choice:
+        return "It's a tie!"
+    elif (user_choice == 'rock' and computer_choice == 'scissors') or \
+         (user_choice == 'scissors' and computer_choice == 'paper') or \
+         (user_choice == 'paper' and computer_choice == 'rock'):
+        return "You win!"
+    else:
+        return "Computer wins!"
 
-  def complete_task(self, index):
-      if 1 <= index <= len(self.tasks):
-          task = self.tasks[index - 1]
-          print(f"Completed task: {task}")
-          del self.tasks[index - 1]
-      else:
-          print("Invalid task index.")
-
-  def remove_task(self, index):
-      if 1 <= index <= len(self.tasks):
-          task = self.tasks[index - 1]
-          print(f"Removed task: {task}")
-          del self.tasks[index - 1]
-      else:
-          print("Invalid task index.")
-
-  def clear_tasks(self):
-      self.tasks = []
-      print("All tasks cleared.")
-
-def main():
-  todo_list = TodoList()
-
-  while True:
-      print("\n1. Add Task")
-      print("2. View Tasks")
-      print("3. Complete Task")
-      print("4. Remove Task")
-      print("5. Clear All Tasks")
-      print("6. Quit")
-
-      choice = input("Enter your choice: ")
-
-      if choice == "1":
-          task = input("Enter task: ")
-          todo_list.add_task(task)
-      elif choice == "2":
-          todo_list.view_tasks()
-      elif choice == "3":
-          index = int(input("Enter task index to mark as completed: "))
-          todo_list.complete_task(index)
-      elif choice == "4":
-          index = int(input("Enter task index to remove: "))
-          todo_list.remove_task(index)
-      elif choice == "5":
-          todo_list.clear_tasks()
-      elif choice == "6":
-          break
-      else:
-          print("Invalid choice. Please try again.")
-
-if __name__ == "__main__":
-  main()
+def play_game():
+    user_score = 0
+    computer_score = 0
+    while True:
+        user_choice = get_user_choice()
+        computer_choice = get_computer_choice()
+        print(f"You chose: {user_choice}")
+        print(f"Computer chose: {computer_choice}")
+        result = determine_winner(user_choice, computer_choice)
+        print(result)
+        if result == "You win!":
+            user_score += 1
+        elif result == "Computer wins!":
+            computer_score += 1
+        play_again = input("Do you want to play again? (yes/no): ").lower()
+        if play_again != 'yes':
+            print(f"Final Score - You: {user_score}, Computer: {computer_score}")
+            break
+    play_game()
